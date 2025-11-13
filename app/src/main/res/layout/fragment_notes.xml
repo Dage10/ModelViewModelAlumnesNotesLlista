@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FragmentNotes">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textNom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom Alumne" />
+
+        <TextView
+            android:id="@+id/textGrup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Grup Alumne" />
+
+        <EditText
+            android:id="@+id/editModul"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Introdueix mòdul" />
+
+        <EditText
+            android:id="@+id/editNota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Introdueix nota"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/btnAfegir"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
+
+        <Button
+            android:id="@+id/btnLlistat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="->" />
+
+    </LinearLayout>
+
+</FrameLayout>

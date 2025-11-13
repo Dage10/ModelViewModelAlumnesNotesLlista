@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/fragmentAlumne">
+
+    <fragment
+        android:id="@+id/fragmentAlumne"
+        android:name="com.daviddam.modelviewmodelalumnesnotesllista.FragmentAlumne"
+        android:label="fragment_alumne"
+        tools:layout="@layout/fragment_alumne" >
+        <action
+            android:id="@+id/action_fragmentAlumne_to_fragmentNotes"
+            app:destination="@id/fragmentNotes" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentNotes"
+        android:name="com.daviddam.modelviewmodelalumnesnotesllista.FragmentNotes"
+        android:label="fragment_notes"
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_fragmentNotes_to_fragmentLlistat"
+            app:destination="@id/fragmentLlistat" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentLlistat"
+        android:name="com.daviddam.modelviewmodelalumnesnotesllista.FragmentLlistat"
+        android:label="fragment_llistat"
+        tools:layout="@layout/fragment_llistat" />
+</navigation>
