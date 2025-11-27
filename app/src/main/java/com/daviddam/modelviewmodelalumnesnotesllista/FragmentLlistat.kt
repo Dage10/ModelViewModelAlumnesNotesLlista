@@ -45,8 +45,20 @@ class FragmentLlistat : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.notes.observe(viewLifecycleOwner) { notes ->
-            adapter.submitList(notes.toList())
+        viewModel.alumneSeleccionat.observe(viewLifecycleOwner) { alumne ->
+            alumne?.let {
+                binding.tvNomAlumne.text = getString(R.string.alumne_format, it.nom, it.grup)
+            }
+        }
+
+
+
+        binding.btnCercar.setOnClickListener {
+            val alumne = viewModel.alumneSeleccionat.value
+            if (alumne != null) {
+                val notesFiltrades = viewModel.notes.value?.filter { it.alumne.nom == alumne.nom }
+                adapter.submitList(notesFiltrades ?: emptyList())
+            }
         }
 
         return binding.root

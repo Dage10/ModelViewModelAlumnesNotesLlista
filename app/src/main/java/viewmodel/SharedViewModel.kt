@@ -15,12 +15,12 @@ class SharedViewModel : ViewModel() {
 
     fun seleccionarAlumne(alumne: Alumne) {
         _alumneSeleccionat.value = alumne
-        _notes.value = mutableListOf()
     }
 
     fun afegirNota(modul: String, valor: Double) {
+        val alumneSeleccionat = _alumneSeleccionat.value ?: return
         val llista = _notes.value ?: mutableListOf()
-        llista.add(Nota(modul, valor))
+        llista.add(Nota(modul, valor, alumneSeleccionat))
         _notes.value = llista
     }
 }
