@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.daviddam.modelviewmodelalumnesnotesllista.databinding.FragmentLlistatBinding
+import viewmodel.LlistatViewModel
 import viewmodel.SharedViewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,7 +23,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentLlistat : Fragment() {
     // TODO: Rename and change types of parameters
-    private val viewModel: SharedViewModel by activityViewModels()
+    private val viewModel: LlistatViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var binding: FragmentLlistatBinding
     private var param1: String? = null
     private var param2: String? = null
 
@@ -37,31 +40,37 @@ class FragmentLlistat : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val binding = FragmentLlistatBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentLlistatBinding.inflate(inflater, container, false)
         val adapter = NotaAdapter()
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        viewModel.alumneSeleccionat.observe(viewLifecycleOwner) { alumne ->
+        sharedViewModel.alumneSeleccionat.observe(viewLifecycleOwner) { alumne ->
             alumne?.let {
+                viewModel.establecerAlumne(it)
                 binding.tvNomAlumne.text = getString(R.string.alumne_format, it.nom, it.grup)
             }
         }
 
-
+        sharedViewModel.notes.observe(viewLifecycleOwner) { notes ->
+            viewModel.establecerNotes(notes)
+        }
 
         binding.btnCercar.setOnClickListener {
-            val alumne = viewModel.alumneSeleccionat.value
-            if (alumne != null) {
-                val notesFiltrades = viewModel.notes.value?.filter { it.alumne.nom == alumne.nom }
-                adapter.submitList(notesFiltrades ?: emptyList())
-            }
+            viewModel.filtrarNotesAlumne()
+        }
+
+        viewModel.notesFiltrades.observe(viewLifecycleOwner) { notesFiltradas ->
+            adapter.submitList(notesFiltradas)
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {

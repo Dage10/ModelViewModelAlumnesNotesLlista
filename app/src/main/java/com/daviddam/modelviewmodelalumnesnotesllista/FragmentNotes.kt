@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.daviddam.modelviewmodelalumnesnotesllista.databinding.FragmentNotesBinding
+import viewmodel.NotesViewModel
 import viewmodel.SharedViewModel
 
 
@@ -23,7 +24,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentNotes : Fragment() {
     // TODO: Rename and change types of parameters
-    private val viewModel: SharedViewModel by activityViewModels()
+    private val viewModel: NotesViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var binding: FragmentNotesBinding
     private var param1: String? = null
     private var param2: String? = null
 
@@ -38,11 +41,11 @@ class FragmentNotes : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val binding = FragmentNotesBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentNotesBinding.inflate(inflater, container, false)
 
-        viewModel.alumneSeleccionat.observe(viewLifecycleOwner) { alumne ->
+        sharedViewModel.alumneSeleccionat.observe(viewLifecycleOwner) { alumne ->
+            alumne?.let { viewModel.establecerAlumne(it) }
             binding.textNom.text = alumne?.nom
             binding.textGrup.text = alumne?.grup
         }
@@ -52,6 +55,7 @@ class FragmentNotes : Fragment() {
             val nota = binding.editNota.text.toString().toDoubleOrNull()
             if (modul.isNotEmpty() && nota != null) {
                 viewModel.afegirNota(modul, nota)
+                sharedViewModel.afegirNota(modul, nota)
                 binding.editModul.text.clear()
                 binding.editNota.text.clear()
             }
@@ -62,6 +66,10 @@ class FragmentNotes : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {

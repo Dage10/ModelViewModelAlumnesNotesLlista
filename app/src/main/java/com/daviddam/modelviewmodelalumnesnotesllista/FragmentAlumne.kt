@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.daviddam.modelviewmodelalumnesnotesllista.databinding.FragmentAlumneBinding
-import model.Alumne
+import viewmodel.AlumneViewModel
 import viewmodel.SharedViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +25,9 @@ private const val ARG_PARAM2 = "param2"
  */
 class FragmentAlumne : Fragment() {
     // TODO: Rename and change types of parameters
-    private val viewModel: SharedViewModel by activityViewModels()
+    private val viewModel: AlumneViewModel by activityViewModels()
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private lateinit var binding: FragmentAlumneBinding
     private var param1: String? = null
     private var param2: String? = null
 
@@ -40,26 +42,27 @@ class FragmentAlumne : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        val binding = FragmentAlumneBinding.inflate(inflater, container, false)
+    ): View {
+        binding = FragmentAlumneBinding.inflate(inflater, container, false)
 
-        val alumnes = listOf(
-            Alumne("Lucía", "DAM2"),
-            Alumne("Luis", "DAM2"),
-            Alumne("Manel", "DAM2"),
-            Alumne("Guillem", "DAU1")
-        )
-
-        val adapter = AlumneAdapter(alumnes) { alumne ->
+        val adapter = AlumneAdapter(emptyList()) { alumne ->
             viewModel.seleccionarAlumne(alumne)
+            sharedViewModel.seleccionarAlumne(alumne)
             findNavController().navigate(R.id.action_fragmentAlumne_to_fragmentNotes)
         }
 
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        viewModel.alumnesList.observe(viewLifecycleOwner) { alumnes ->
+            adapter.updateList(alumnes)
+        }
+
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     companion object {

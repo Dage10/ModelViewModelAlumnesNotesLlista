@@ -8,9 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import model.Alumne
 
 class AlumneAdapter(
-    private val alumnes: List<Alumne>,
+    private var alumnes: List<Alumne>,
     private val onItemClick: (Alumne) -> Unit
 ) : RecyclerView.Adapter<AlumneAdapter.AlumneViewHolder>() {
+
+    fun updateList(newAlumnes: List<Alumne>) {
+        alumnes = newAlumnes
+        notifyDataSetChanged()
+    }
 
     inner class AlumneViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textNom: TextView = itemView.findViewById(R.id.tvNomAlumne)
